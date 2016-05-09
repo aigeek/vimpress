@@ -99,19 +99,22 @@ let s:script_home = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 python << EOF
 # -*- coding: utf-8 -*-
 import urllib, urllib2, vim, xml.dom.minidom, xmlrpclib, sys, string, re, os, mimetypes, webbrowser, tempfile, time
-HOMEPATH = os.path.abspath(os.path.join(vim.eval('s:script_home'), '..'))
+HOME = os.path.abspath(os.path.join(vim.eval('s:script_home'), '..'))
 sys.path.append(os.path.join(HOME, 'lib'))
 
 try:
-    import markdown
+	import markdown3 as markdown
 except ImportError:
-    try:
-        import markdown2 as markdown
-    except ImportError:
-        class markdown_stub(object):
-            def markdown(self, n):
-                raise VimPressException("The package python-markdown is required and is either not present or not properly installed.")
-        markdown = markdown_stub()
+	try:
+		import markdown
+	except ImportError:
+		try:
+			import markdown2 as markdown
+		except ImportError:
+			class markdown_stub(object):
+				def markdown(self, n):
+					raise VimPressException("The package python-markdown is required and is either not present or not properly installed.")
+			markdown = markdown_stub()
 
 image_template = '<a href="%(url)s"><img title="%(file)s" alt="%(file)s" src="%(url)s" class="aligncenter" /></a>'
 blog_username = None
