@@ -93,9 +93,15 @@ command! -nargs=1 BlogOpen exec('py blog_guess_open(<f-args>)')
 command! -nargs=? BlogSwitch exec('py blog_config_switch(<f-args>)')
 command! -nargs=? BlogCode exec('py blog_append_code(<f-args>)')
 
+
+let s:script_home = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+
 python << EOF
 # -*- coding: utf-8 -*-
 import urllib, urllib2, vim, xml.dom.minidom, xmlrpclib, sys, string, re, os, mimetypes, webbrowser, tempfile, time
+HOMEPATH = os.path.abspath(os.path.join(vim.eval('s:script_home'), '..'))
+sys.path.append(os.path.join(HOME, 'lib'))
+
 try:
     import markdown
 except ImportError:
